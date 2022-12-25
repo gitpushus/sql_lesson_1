@@ -1,0 +1,26 @@
+SELECT `id`, `fio`, Year(FROM_DAYS(DATEDIFF(now(),`start_date`))) FROM `staff`;
+
+SELECT `id`, `fio`, Year(FROM_DAYS(DATEDIFF(now(),`start_date`))) FROM `staff` limit 3;
+
+SELECT `id` FROM `staff` where `driver_licence` = 1;
+
+SELECT `id` FROM `staff` JOIN `staff_mark` ON `staff`.`id` = `staff_mark`.`staff_id` WHERE ( `staff_mark`.`first_quarter` = 'D' OR `staff_mark`.`first_quarter` = 'E' ) OR( `staff_mark`.`second_quarter` = 'D' OR `staff_mark`.`second_quarter` = 'E' ) OR( `staff_mark`.`third_quarter` = 'D' OR `staff_mark`.`third_quarter` = 'E' ) OR( `staff_mark`.`fourth_quarter` = 'D' OR `staff_mark`.`fourth_quarter` = 'E' );
+
+SELECT max(`salary`) FROM `staff`;
+
+select `name` from `department` where count_employees = (select max(`count_employees`) from `department`);
+
+
+SELECT `id`, `fio`, Year(FROM_DAYS(DATEDIFF(now(),`start_date`))) FROM `staff` ORDER BY `Year(FROM_DAYS(DATEDIFF(now(),``start_date``)))` DESC
+
+SELECT `employee_level`, avg(`salary`) FROM `staff` group by `employee_level`;
+
+CREATE TABLE `staff_mark` (
+  `staff_id` int(11) NOT NULL,
+  `first_quarter` varchar(1) DEFAULT NULL,
+  `second_quarter` varchar(1) DEFAULT NULL,
+  `third_quarter` varchar(1) DEFAULT NULL,
+  `fourth_quarter` varchar(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+SELECT *, 1 + (select `value` from `mark` where `name` = `staff_mark`.`first_quarter`) + (select `value` from `mark` where `name` = `staff_mark`.`second_quarter`) + (select `value` from `mark` where `name` = `staff_mark`.`third_quarter`) + (select `value` from `mark` where `name` = `staff_mark`.`fourth_quarter`) as `coefficient` FROM `staff_mark`;
